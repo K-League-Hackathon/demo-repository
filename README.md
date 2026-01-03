@@ -1,20 +1,45 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# K리그 라이브 분석 대시보드
 
-# Run and deploy your AI Studio app
+경기 중 축구 데이터를 실시간으로 시각화하는 K리그 해커톤 프로젝트입니다.
 
-This contains everything you need to run your app locally.
+## 프로젝트 소개
 
-View your app in AI Studio: https://ai.studio/apps/drive/1iJxnsG0rL4KXHjbSGqBA8MPfWSBpQMB_
+이 프로젝트는 K리그 경기 데이터를 활용하여 경기 진행 중 다양한 통계와 분석 정보를 시각적으로 제공하는 대시보드입니다. 
+선수 성능 분석, 피치맵 시각화, 레이더 차트 등의 기능을 제공합니다.
 
-## Run Locally
+## 주요 기능
 
-**Prerequisites:**  Node.js
+- **피치맵 시각화**: 경기 중 선수 위치 및 플레이 분석
+- **선수 카드**: 개별 선수의 성능 통계
+- **레이더 차트**: 선수의 능력치 비교 분석
+- **비디오 플레이어**: 경기 영상 재생
+- **액션 스택**: 경기 중 주요 플레이 기록
 
+## 설치 및 실행
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+**필수 요구사항**: Node.js
+
+1. 의존성 설치:
+   ```bash
+   npm install
+   ```
+
+2. 개발 서버 실행:
+   ```bash
+   npm run dev
+   ```
+
+3. 브라우저에서 열기:
+   ```
+   http://localhost:5173
+   ```
+
+## 기술 스택
+
+- React + TypeScript
+- Vite
+- CSS/Responsive Design
+
+## 라이선스
+
+MIT
