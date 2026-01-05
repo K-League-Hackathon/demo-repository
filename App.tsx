@@ -4,6 +4,7 @@ import { PLAYERS, MOCK_SEQUENCE } from './constants';
 import PlayerCard from './components/PlayerCard';
 import VideoPlayer from './components/VideoPlayer';
 import PitchMap from './components/PitchMap';
+import RecentMatchScore from './components/RecentMatchScore';
 import { MatchInfo, Player, SequenceAction } from './types';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -26,6 +27,16 @@ const App: React.FC = () => {
   const [currentSequenceRange, setCurrentSequenceRange] = useState<number[]>([]);
   const [activeSequenceActions, setActiveSequenceActions] = useState<SequenceAction[]>([]);
   const autoPlayTimerRef = useRef<number | null>(null);
+
+  // 최근 맞대결 데이터
+  const recentMatch = {
+    homeTeam: 'Gwangju FC',
+    awayTeam: 'FC Seoul',
+    homeScore: 2,
+    awayScore: 0,
+    homeLogo: '/광주fc.png',
+    awayLogo: '/서울fc.png'
+  };
 
   const shotLogs = MOCK_SEQUENCE.filter(action => action.type_name === "Shot");
 
@@ -87,7 +98,7 @@ const App: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-[#050b18] text-white selection:bg-[#c5a059] selection:text-[#050b18]">
       <header className="h-14 flex items-center px-6 bg-[#0a1428]/95 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-[100] justify-between shadow-xl">
         <div className="flex items-center gap-5">
-          <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/K_League_1_logo.svg/1200px-K_League_1_logo.svg.png" alt="K League" className="h-8 drop-shadow-md" />
+          <img src="/KLeague.png" alt="K League" className="h-8 drop-shadow-md" />
           <div className="h-4 w-[1px] bg-white/10"></div>
           <div className="flex flex-col">
             <h1 className="text-sm font-black tracking-tight uppercase italic leading-none">Match Matrix AI</h1>
@@ -106,7 +117,10 @@ const App: React.FC = () => {
       <main className="flex-1 grid grid-cols-1 lg:grid-cols-10 h-[calc(100vh-3.5rem)] overflow-hidden">
         {/* Sidebar: Profile Dominant Layout */}
         <aside className="lg:col-span-3 h-full border-r border-[#c5a059]/20 flex flex-col overflow-hidden bg-[#0a1428] shadow-2xl z-20">
-          <div className="h-[72%] overflow-hidden border-b border-white/5 shrink-0">
+          {/* Recent Match Score */}
+          <RecentMatchScore match={recentMatch} />
+          
+          <div className="h-[60%] overflow-hidden border-b border-white/5 shrink-0">
             <AnimatePresence mode="wait">
                 <motion.div 
                   key={currentPlayer.id}

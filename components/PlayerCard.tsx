@@ -36,26 +36,29 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player }) => {
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#050b18] via-transparent to-transparent opacity-100" />
         <div className="absolute bottom-0 left-0 w-full h-1/2 z-15 bg-gradient-to-t from-[#0a1428] to-transparent" />
         
-        {!imgError ? (
-          <motion.img 
-            key={player.id}
-            initial={{ opacity: 0, y: 40, scale: 1.1 }}
-            animate={{ opacity: 0.9, y: 0, scale: 1.05 }}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            src={player.photoUrl} 
-            alt={player.name} 
-            onError={() => setImgError(true)}
-            className="absolute right-0 top-0 h-full w-[95%] object-cover object-top origin-top"
-            style={{ 
-              maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 100%), linear-gradient(to top, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 100%), linear-gradient(to top, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%)'
-            }}
-          />
-        ) : (
-          <div className="absolute right-16 top-1/2 -translate-y-1/2 w-48 h-48 bg-white/5 rounded-full flex items-center justify-center border border-white/10 italic text-[14px] text-gray-700">
-            PROFILE ERROR
-          </div>
-        )}
+        {/* 원형 프로필 이미지 */}
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 z-5">
+          {!imgError ? (
+            <motion.div
+              key={player.id}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="w-48 h-48 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl"
+            >
+              <img 
+                src={player.photoUrl} 
+                alt={player.name} 
+                onError={() => setImgError(true)}
+                className="w-full h-full object-cover object-center"
+              />
+            </motion.div>
+          ) : (
+            <div className="w-48 h-48 bg-white/5 rounded-full flex items-center justify-center border border-white/10 italic text-[14px] text-gray-700">
+              PROFILE ERROR
+            </div>
+          )}
+        </div>
 
         {/* Big Name & Number Overlay */}
         <div className="absolute inset-0 z-20 px-8 flex flex-col justify-end pb-10">

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { Player, SequenceAction } from '../types';
-import { MOCK_SEQUENCE, PLAYERS, COLORS } from '../constants';
+import { MOCK_SEQUENCE, PLAYERS, COLORS, AWAY_FORMATION } from '../constants';
 import ActionStack from './ActionStack';
 
 interface PitchMapProps {
@@ -238,6 +238,7 @@ const PitchMap: React.FC<PitchMapProps> = ({
           <AnimatePresence>
             {viewMode === 'IDLE' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-20">
+                {/* 광주 FC (홈팀) - 클릭 가능 */}
                 {PLAYERS.map(p => (
                   <button 
                     key={p.id} 
@@ -247,6 +248,16 @@ const PitchMap: React.FC<PitchMapProps> = ({
                   >
                     {p.number}
                   </button>
+                ))}
+                {/* 서울 FC (원정팀) - 클릭 불가 */}
+                {AWAY_FORMATION.map(p => (
+                  <div 
+                    key={p.id} 
+                    style={{ left: `${getPosX(p.x)}%`, top: `${getPosY(p.y)}%` }} 
+                    className="absolute -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full border flex items-center justify-center font-black text-[9px] shadow-lg bg-[#1e3a5f] border-blue-400/30 text-blue-300 cursor-default"
+                  >
+                    {p.number}
+                  </div>
                 ))}
               </motion.div>
             )}

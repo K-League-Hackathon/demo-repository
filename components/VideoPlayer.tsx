@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { MatchInfo } from '../types';
 import { COLORS } from '../constants';
 
@@ -8,29 +8,24 @@ interface VideoPlayerProps {
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ matchInfo }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 1228; // 20분 28초
+    }
+  }, []);
+
   return (
     <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl shadow-blue-900/20 group">
-      {/* Mock Video Placeholder */}
-      <img 
-        src="https://picsum.photos/seed/k-league-match/1920/1080" 
+      {/* Match Video */}
+      <video 
+        ref={videoRef}
+        src="/ksoccer.mp4"
         className="w-full h-full object-cover brightness-75 group-hover:brightness-90 transition-all duration-500"
-        alt="Match Stream"
+        controls
+        muted
       />
-      
-      {/* Overlay: Top Scoreboard */}
-      <div className="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-0 shadow-lg">
-        <div className="bg-[#0a1428] px-6 py-2 border-l-4 border-[#c5a059] flex items-center gap-4">
-          <span className="text-lg font-black text-white">{matchInfo.homeTeam}</span>
-          <span className="text-2xl font-black text-[#c5a059]">{matchInfo.homeScore}</span>
-        </div>
-        <div className="bg-white px-3 py-2 flex items-center justify-center font-black text-[#0a1428] min-w-[60px]">
-          {matchInfo.time}
-        </div>
-        <div className="bg-[#0a1428] px-6 py-2 border-r-4 border-blue-600 flex items-center gap-4">
-          <span className="text-2xl font-black text-white">{matchInfo.awayScore}</span>
-          <span className="text-lg font-black text-white">{matchInfo.awayTeam}</span>
-        </div>
-      </div>
 
       {/* Overlay: Live Badge */}
       <div className="absolute top-6 left-6 flex items-center gap-2">
@@ -45,12 +40,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ matchInfo }) => {
       </div>
 
       {/* Central Play Button (Mock Interaction) */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <button className="w-20 h-20 bg-[#c5a059]/80 backdrop-blur-sm rounded-full flex items-center justify-center text-[#050b18] transform hover:scale-110 transition-transform">
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+        <div className="w-20 h-20 bg-[#c5a059]/80 backdrop-blur-sm rounded-full flex items-center justify-center text-[#050b18]">
           <svg className="w-10 h-10 ml-1" fill="currentColor" viewBox="0 0 24 24">
             <path d="M8 5v14l11-7z" />
           </svg>
-        </button>
+        </div>
       </div>
       
       {/* Broadcast UI Lines */}

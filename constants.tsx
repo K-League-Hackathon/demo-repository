@@ -38,31 +38,47 @@ const TRAITS_POOLS: Record<string, {name: string, description: string}[]> = {
 
 // 고해상도 스포츠 초상화 이미지 (Unsplash 기반 플레이스홀더)
 const PLAYER_IMAGES: Record<string, string> = {
-  'h1': 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=400', 
-  'h2': 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=400',
-  'h3': 'https://images.unsplash.com/photo-1543351611-58f69d7c1781?auto=format&fit=crop&q=80&w=400',
-  'h4': 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&q=80&w=400',
-  'h5': 'https://images.unsplash.com/photo-1511886929837-354d827aae26?auto=format&fit=crop&q=80&w=400',
-  'won-du-jae': 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=400',
-  'kang-hyeon-muk': 'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&q=80&w=400',
-  'kim-min-jun': 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&q=80&w=400',
-  'lee-kang-in': 'https://images.unsplash.com/photo-1560272564-c83d66b1ad12?auto=format&fit=crop&q=80&w=400',
-  'h10': 'https://images.unsplash.com/photo-1552318975-27db393d2833?auto=format&fit=crop&q=80&w=400',
-  'kim-jae-woo': 'https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&q=80&w=400',
+  'h1': './public/players/김경민.png', 
+  'h2': './public/players/김진호.png',
+  'h3': './public/players/포포비치.png',
+  'h4': './public/players/안영규.png',
+  'h5': './public/players/두현석.png',
+  'h6': './public/players/안혁주.png',
+  'h7': './public/players/정호연.png',
+  'h8': './public/players/최경록.png',
+  'h9': './public/players/티그랑.png',
+  'h10': './public/players/이희균.png',
+  'h11': './public/players/이건희.png',
 };
 
+// 광주 FC - 1-4-4-2 포메이션 (왼쪽)
 export const HOME_FORMATION = [
-  { id: 'h1', name: '조현우', number: 21, pos: 'GK', x: 5, y: 34 },
-  { id: 'h2', name: '설영우', number: 66, pos: 'RB', x: 28, y: 8 },
-  { id: 'h3', name: '김영권', number: 19, pos: 'RCB', x: 22, y: 24 },
-  { id: 'h4', name: '정승현', number: 15, pos: 'LCB', x: 22, y: 44 },
-  { id: 'h5', name: '이명재', number: 13, pos: 'LB', x: 28, y: 60 },
-  { id: 'won-du-jae', name: '원두재', number: 6, pos: 'CDM', x: 42, y: 34 },
-  { id: 'kang-hyeon-muk', name: '강현묵', number: 7, pos: 'LCM', x: 52, y: 50 },
-  { id: 'kim-min-jun', name: '김민준', number: 17, pos: 'RCM', x: 52, y: 18 },
-  { id: 'lee-kang-in', name: '이강인', number: 10, pos: 'RW', x: 78, y: 12 },
-  { id: 'h10', name: '주민규', number: 18, pos: 'ST', x: 88, y: 34 },
-  { id: 'kim-jae-woo', name: '김재우', number: 11, pos: 'LW', x: 78, y: 56 },
+  { id: 'h1', name: '김경민', number: 1, pos: 'GK', x: 5, y: 34 },
+  { id: 'h2', name: '김진호', number: 27, pos: 'RB', x: 20, y: 8 },
+  { id: 'h3', name: '포포비치', number: 4, pos: 'RCB', x: 20, y: 25 },
+  { id: 'h4', name: '안영규', number: 6, pos: 'LCB', x: 20, y: 43 },
+  { id: 'h5', name: '두현석', number: 13, pos: 'LB', x: 20, y: 60 },
+  { id: 'h6', name: '안혁주', number: 28, pos: 'RM', x: 35, y: 12 },
+  { id: 'h7', name: '정호연', number: 14, pos: 'RCM', x: 35, y: 30 },
+  { id: 'h8', name: '최경록', number: 30, pos: 'LCM', x: 35, y: 48 },
+  { id: 'h9', name: '티그랑', number: 11, pos: 'LM', x: 35, y: 65 },
+  { id: 'h10', name: '이희균', number: 10, pos: 'RS', x: 48, y: 25 },
+  { id: 'h11', name: '이건희', number: 20, pos: 'LS', x: 48, y: 50 },
+];
+
+// 서울 FC - 1-4-2-3-1 포메이션 (오른쪽)
+export const AWAY_FORMATION = [
+  { id: 'a1', name: '김승규', number: 1, pos: 'GK', x: 95, y: 34 },
+  { id: 'a2', name: '박진섭', number: 50, pos: 'RB', x: 80, y: 8 },
+  { id: 'a3', name: '한승규', number: 66, pos: 'RCB', x: 80, y: 25 },
+  { id: 'a4', name: '권완규', number: 3, pos: 'LCB', x: 80, y: 43 },
+  { id: 'a5', name: '최재현', number: 21, pos: 'LB', x: 80, y: 60 },
+  { id: 'a6', name: '강상우', number: 11, pos: 'RDM', x: 70, y: 20 },
+  { id: 'a7', name: '김주성', number: 30, pos: 'LDM', x: 70, y: 48 },
+  { id: 'a8', name: '김진수', number: 9, pos: 'RW', x: 60, y: 10 },
+  { id: 'a9', name: '팔로세비치', number: 26, pos: 'CAM', x: 60, y: 34 },
+  { id: 'a10', name: '기성용', number: 6, pos: 'LW', x: 60, y: 58 },
+  { id: 'a11', name: '조영욱', number: 32, pos: 'ST', x: 52, y: 34 },
 ];
 
 export const PLAYERS: Player[] = HOME_FORMATION.map(f => ({
@@ -71,8 +87,8 @@ export const PLAYERS: Player[] = HOME_FORMATION.map(f => ({
   engName: f.id.replace(/-/g, ' ').toUpperCase(),
   position: f.pos,
   number: f.number,
-  team: 'SEOUL FC',
-  teamLogo: 'https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/K_League_1_logo.svg/1200px-K_League_1_logo.svg.png',
+  team: 'GWANGJU FC',
+  teamLogo: '/광주fc.png',
   photoUrl: PLAYER_IMAGES[f.id] || `https://picsum.photos/seed/${f.id}/400/500`,
   x: f.x,
   y: f.y,
