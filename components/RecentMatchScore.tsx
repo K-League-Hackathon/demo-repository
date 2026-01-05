@@ -13,34 +13,34 @@ interface RecentMatch {
 
 interface RecentMatchScoreProps {
   match: RecentMatch;
+  isVideoPlaying?: boolean;
+  videoCurrentTime?: number;
 }
 
-const RecentMatchScore: React.FC<RecentMatchScoreProps> = ({ match }) => {
+const RecentMatchScore: React.FC<RecentMatchScoreProps> = ({ match, isVideoPlaying = false, videoCurrentTime }) => {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const startTimeSeconds = 20 * 60 + 28; // 20:28
-  const endTimeSeconds = 21 * 60 + 28; // 21:28
   const goalTimeSeconds = 20 * 60 + 50; // 20:50에 골
-  const duration = endTimeSeconds - startTimeSeconds; // 60초
+  const duration = 60; // 1분 영상
 
+  // 영상 시간과 동기화 (영상 0초 = 타이머 20:28)
   useEffect(() => {
-    const interval = setInterval(() => {
-      setElapsedSeconds(prev => {
-        if (prev >= duration) {
-          return 0; // 루프
-        }
-        return prev + 1;
-      });
-    }, 1000);
+    if (videoCurrentTime !== undefined && isVideoPlaying) {
+      const elapsed = Math.floor(videoCurrentTime);
+      if (elapsed >= 0 && elapsed <= duration) {
+        setElapsedSeconds(elapsed);
+      }
+    }
+  }, [videoCurrentTime, isVideoPlaying, duration]);
 
-    return () => clearInterval(interval);
-  }, [duration]);
+  // 영상이 재생 중이 아니면 타이머 멈춤 (초기 상태에서 대기)
 
   const currentTimeSeconds = startTimeSeconds + elapsedSeconds;
   const minutes = Math.floor(currentTimeSeconds / 60);
   const seconds = currentTimeSeconds % 60;
   const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
   
-  // 20:50 이후면 1-0, 이전이면 0-0
+  // 20:50 이후면 1-0, 이전이면 0-0 (영상 22초 시점)
   const homeScore = currentTimeSeconds >= goalTimeSeconds ? 1 : 0;
   const awayScore = 0;
 

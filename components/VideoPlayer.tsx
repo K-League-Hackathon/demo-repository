@@ -5,14 +5,16 @@ import { COLORS } from '../constants';
 
 interface VideoPlayerProps {
   matchInfo: MatchInfo;
+  onPlayStateChange?: (isPlaying: boolean) => void;
+  onTimeUpdate?: (currentTime: number) => void;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ matchInfo }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ matchInfo, onPlayStateChange, onTimeUpdate }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.currentTime = 1228; // 20분 28초
+      videoRef.current.currentTime = 0; // 영상 처음부터 시작 (1분짜리 영상)
     }
   }, []);
 
@@ -25,6 +27,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ matchInfo }) => {
         className="w-full h-full object-cover brightness-75 group-hover:brightness-90 transition-all duration-500"
         controls
         muted
+        onPlay={() => onPlayStateChange?.(true)}
+        onPause={() => onPlayStateChange?.(false)}
+        onTimeUpdate={(e) => onTimeUpdate?.((e.target as HTMLVideoElement).currentTime)}
       />
 
       {/* Overlay: Live Badge */}

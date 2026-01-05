@@ -28,6 +28,10 @@ const App: React.FC = () => {
   const [activeSequenceActions, setActiveSequenceActions] = useState<SequenceAction[]>([]);
   const autoPlayTimerRef = useRef<number | null>(null);
 
+  // 영상 재생 상태 관리
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [videoCurrentTime, setVideoCurrentTime] = useState(1228); // 20:28 시작
+
   // 최근 맞대결 데이터
   const recentMatch = {
     homeTeam: 'Gwangju FC',
@@ -118,7 +122,11 @@ const App: React.FC = () => {
         {/* Sidebar: Profile Dominant Layout */}
         <aside className="lg:col-span-3 h-full border-r border-[#c5a059]/20 flex flex-col overflow-hidden bg-[#0a1428] shadow-2xl z-20">
           {/* Recent Match Score */}
-          <RecentMatchScore match={recentMatch} />
+          <RecentMatchScore 
+            match={recentMatch} 
+            isVideoPlaying={isVideoPlaying}
+            videoCurrentTime={videoCurrentTime}
+          />
           
           <div className="h-[60%] overflow-hidden border-b border-white/5 shrink-0">
             <AnimatePresence mode="wait">
@@ -174,7 +182,11 @@ const App: React.FC = () => {
           <div className="p-6 lg:p-8 flex flex-col gap-6 overflow-y-auto h-full no-scrollbar z-10">
             <div className="absolute top-0 right-0 w-[70%] h-full bg-blue-600/5 blur-[150px] pointer-events-none -z-10" />
             <div className="w-full max-w-6xl mx-auto flex flex-col gap-6">
-              <VideoPlayer matchInfo={matchInfo} />
+              <VideoPlayer 
+                matchInfo={matchInfo} 
+                onPlayStateChange={setIsVideoPlaying}
+                onTimeUpdate={setVideoCurrentTime}
+              />
               <PitchMap 
                 players={PLAYERS} 
                 selectedId={currentPlayer.id} 
