@@ -35,7 +35,6 @@ const TRAITS_POOLS: Record<string, {name: string, description: string}[]> = {
     { name: "타겟맨 (Wall Finisher)", description: "전방에서 공을 소유하며 동료에게 기회 창출" }
   ]
 };
-
 // 고해상도 스포츠 초상화 이미지 (Unsplash 기반 플레이스홀더)
 const PLAYER_IMAGES: Record<string, string> = {
   'h1': './public/players/김경민.png', 
@@ -81,6 +80,39 @@ export const AWAY_FORMATION = [
   { id: 'a11', name: '조영욱', number: 32, pos: 'ST', x: 52, y: 34 },
 ];
 
+// 선수별 실제 능력치 데이터
+const PLAYER_STATS: Record<string, { PAC: number; SHO: number; PAS: number; DRI: number; DEF: number; PHY: number }> = {
+  '안영규': { PAC: 70.1, SHO: 23.6, PAS: 94.5, DRI: 50.1, DEF: 82.5, PHY: 85.4 },
+  '안혁주': { PAC: 43.5, SHO: 57.7, PAS: 17.3, DRI: 50.1, DEF: 22.1, PHY: 13.8 },
+  '이건희': { PAC: 33.2, SHO: 88.4, PAS: 18.1, DRI: 50.1, DEF: 21.6, PHY: 71.4 },
+  '이희균': { PAC: 72.9, SHO: 87.7, PAS: 58.5, DRI: 50.1, DEF: 50.8, PHY: 27.5 },
+  '김진호': { PAC: 61.6, SHO: 18.8, PAS: 87.9, DRI: 50.1, DEF: 75.6, PHY: 65.3 },
+};
+
+// 기본 능력치 (데이터가 없는 선수용)
+const getPlayerStats = (name: string) => {
+  const stats = PLAYER_STATS[name];
+  if (stats) {
+    return [
+      { subject: 'PAC', value: stats.PAC, fullMark: 100 },
+      { subject: 'SHO', value: stats.SHO, fullMark: 100 },
+      { subject: 'PAS', value: stats.PAS, fullMark: 100 },
+      { subject: 'DRI', value: stats.DRI, fullMark: 100 },
+      { subject: 'DEF', value: stats.DEF, fullMark: 100 },
+      { subject: 'PHY', value: stats.PHY, fullMark: 100 },
+    ];
+  }
+  // 기본 랜덤 능력치
+  return [
+    { subject: 'PAC', value: 70 + Math.random() * 20, fullMark: 100 },
+    { subject: 'SHO', value: 60 + Math.random() * 30, fullMark: 100 },
+    { subject: 'PAS', value: 75 + Math.random() * 20, fullMark: 100 },
+    { subject: 'DRI', value: 70 + Math.random() * 25, fullMark: 100 },
+    { subject: 'DEF', value: 40 + Math.random() * 50, fullMark: 100 },
+    { subject: 'PHY', value: 60 + Math.random() * 30, fullMark: 100 },
+  ];
+};
+
 export const PLAYERS: Player[] = HOME_FORMATION.map(f => ({
   id: f.id,
   name: f.name,
@@ -92,14 +124,7 @@ export const PLAYERS: Player[] = HOME_FORMATION.map(f => ({
   photoUrl: PLAYER_IMAGES[f.id] || `https://picsum.photos/seed/${f.id}/400/500`,
   x: f.x,
   y: f.y,
-  stats: [
-    { subject: 'PAC', value: 70 + Math.random() * 20, fullMark: 100 },
-    { subject: 'SHO', value: 60 + Math.random() * 30, fullMark: 100 },
-    { subject: 'PAS', value: 75 + Math.random() * 20, fullMark: 100 },
-    { subject: 'DRI', value: 70 + Math.random() * 25, fullMark: 100 },
-    { subject: 'DEF', value: 40 + Math.random() * 50, fullMark: 100 },
-    { subject: 'PHY', value: 60 + Math.random() * 30, fullMark: 100 },
-  ],
+  stats: getPlayerStats(f.name),
   keyTraits: TRAITS_POOLS[f.pos.includes('G') ? 'GK' : f.pos.includes('D') ? 'DF' : f.pos.includes('M') ? 'MF' : 'ST'] || TRAITS_POOLS['MF'],
   preferredPlays: ['전술적 움직임', '높은 활동량', '포지셔닝 강점']
 }));

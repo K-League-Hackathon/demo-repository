@@ -174,7 +174,7 @@ const App: React.FC = () => {
                       <div className="flex justify-between items-center">
                         <p className="text-[12px] font-black text-white truncate uppercase">{action.player_name_ko}</p>
                         <span className="text-[8px] font-mono text-amber-500/80">
-                          {Math.floor(action.time_seconds / 60)}:{(action.time_seconds % 60).toFixed(0).padStart(2,'0')}
+                          {Math.floor((1228 + (action.time_seconds - 1048.8)) / 60)}:{((1228 + (action.time_seconds - 1048.8)) % 60).toFixed(0).padStart(2,'0')}
                         </span>
                       </div>
                       {action.type_name === 'Goal' && (

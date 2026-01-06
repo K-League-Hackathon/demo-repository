@@ -103,7 +103,7 @@ const ActionStack: React.FC<ActionStackProps> = ({ actions, activeIndex, onActio
                   {action.player_name_ko}
                 </span>
                 <span className={`text-[8px] font-mono ${isSelected ? 'text-amber-500' : 'text-gray-600'}`}>
-                   {Math.floor(action.time_seconds / 60)}:{(action.time_seconds % 60).toFixed(0).padStart(2,'0')}
+                   {Math.floor((1228 + (action.time_seconds - 1048.8)) / 60)}:{((1228 + (action.time_seconds - 1048.8)) % 60).toFixed(0).padStart(2,'0')}
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
