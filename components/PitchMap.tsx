@@ -53,10 +53,10 @@ const PitchMap: React.FC<PitchMapProps> = ({
     setViewMode('ACTION');
     setCurrentAction(action);
     
-    // activeSequenceActions에서 현재 액션까지의 트레일 설정
+    // activeSequenceActions에서 현재 액션까지의 트레일 설정 (현재 액션은 제외)
     const actionIdx = activeSequenceActions.findIndex(a => a.action_id === action.action_id);
     if (actionIdx >= 0) {
-      setTrails(activeSequenceActions.slice(0, actionIdx + 1));
+      setTrails(activeSequenceActions.slice(0, actionIdx));
     }
     
     const isShot = action.type_name === "Shot";
@@ -76,8 +76,12 @@ const PitchMap: React.FC<PitchMapProps> = ({
       await ballControls.start({ opacity: 1, scale: 1, transition: { duration: 0.2 } });
     }
 
-    if (hasEnd) {
+    if (hasEnd && (action.start_x !== action.end_x || action.start_y !== action.end_y)) {
       await new Promise(r => setTimeout(r, 100));
+      
+      // 공 이동과 동시에 현재 액션을 트레일에 추가
+      setTrails(activeSequenceActions.slice(0, actionIdx + 1));
+      
       await ballControls.start({
         left: `${getPosX(action.end_x!)}%`,
         top: `${getPosY(action.end_y!)}%`,

@@ -130,16 +130,17 @@ export const PLAYERS: Player[] = HOME_FORMATION.map(f => ({
 }));
 
 export const MOCK_SEQUENCE: SequenceAction[] = [
-  { action_id: 626, type_name: "Pass", start_x: 26.38116, start_y: 48.064052, end_x: 50.7516, end_y: 51.879792, player_name_ko: "안영규", team_name_ko: "광주 FC", receiver_name_ko: "김진호", result_name: "Successful", time_seconds: 1048.8 },
-  { action_id: 627, type_name: "Pass Received", start_x: 50.7516, start_y: 51.879792, end_x: 50.7516, end_y: 51.879792, player_name_ko: "김진호", team_name_ko: "광주 FC", time_seconds: 1051.133 },
-  { action_id: 628, type_name: "Carry", start_x: 50.7516, start_y: 51.879792, end_x: 52.22271, end_y: 51.016336, player_name_ko: "김진호", team_name_ko: "광주 FC", time_seconds: 1051.133 },
-  { action_id: 629, type_name: "Pass", start_x: 52.22271, start_y: 51.016336, end_x: 63.14175, end_y: 56.335968, player_name_ko: "김진호", team_name_ko: "광주 FC", receiver_name_ko: "안혁주", result_name: "Successful", time_seconds: 1052.767 },
-  { action_id: 630, type_name: "Pass Received", start_x: 63.14175, start_y: 56.335968, end_x: 63.14175, end_y: 56.335968, player_name_ko: "안혁주", team_name_ko: "광주 FC", time_seconds: 1053.967 },
-  { action_id: 631, type_name: "Pass", start_x: 63.14175, start_y: 56.335968, end_x: 88.42398, end_y: 40.106672, player_name_ko: "안혁주", team_name_ko: "광주 FC", receiver_name_ko: "이건희", result_name: "Successful", time_seconds: 1053.967 },
-  { action_id: 632, type_name: "Pass Received", start_x: 88.42398, start_y: 40.106672, end_x: 88.42398, end_y: 40.106672, player_name_ko: "이건희", team_name_ko: "광주 FC", time_seconds: 1055.6 },
-  { action_id: 633, type_name: "Carry", start_x: 88.42398, start_y: 40.106672, end_x: 89.52735, end_y: 39.020784, player_name_ko: "이건희", team_name_ko: "광주 FC", time_seconds: 1055.6 },
-  { action_id: 634, type_name: "Pass", start_x: 89.52735, start_y: 39.020784, end_x: 93.205245, end_y: 34.809472, player_name_ko: "이건희", team_name_ko: "광주 FC", receiver_name_ko: "이희균", result_name: "Successful", time_seconds: 1057.2 },
-  { action_id: 635, type_name: "Pass Received", start_x: 93.205245, start_y: 34.809472, end_x: 93.205245, end_y: 34.809472, player_name_ko: "이희균", team_name_ko: "광주 FC", time_seconds: 1058.467 },
-  { action_id: 636, type_name: "Shot", start_x: 93.205245, start_y: 34.809472, end_x: 105.0, end_y: 34.0, player_name_ko: "이희균", team_name_ko: "광주 FC", result_name: "Successful", time_seconds: 1058.467 },
-  { action_id: 637, type_name: "Goal", start_x: 105.0, start_y: 34.0, end_x: 105.0, end_y: 34.0, player_name_ko: "이희균", team_name_ko: "광주 FC", result_name: "Goal", time_seconds: 1058.467 }
+  { action_id: 626, type_name: "Pass", start_x: 33.813885, start_y: 37.660848, end_x: 44.389905, end_y: 61.167292, player_name_ko: "안영규", team_name_ko: "광주FC", receiver_name_ko: "김진호", result_name: "Successful", time_seconds: 1228 },
+  { action_id: 627, type_name: "Pass Received", start_x: 44.389905, start_y: 61.167292, end_x: 44.389905, end_y: 61.167292, player_name_ko: "김진호", team_name_ko: "광주FC", time_seconds: 1228.5 },
+  { action_id: 628, type_name: "Carry", start_x: 44.389905, start_y: 61.167292, end_x: 71.454285, end_y: 63.2508664, player_name_ko: "김진호", team_name_ko: "광주FC", time_seconds: 1229 },
+  { action_id: 629, type_name: "Pass", start_x: 71.454285, start_y: 63.2508664, end_x: 82.65789, end_y: 55.155956, player_name_ko: "김진호", team_name_ko: "광주FC", receiver_name_ko: "안혁주", result_name: "Successful", time_seconds: 1230 },
+  { action_id: 630, type_name: "Pass Received", start_x: 82.65789, start_y: 55.155956, end_x: 82.65789, end_y: 55.155956, player_name_ko: "안혁주", team_name_ko: "광주FC", time_seconds: 1230.5 },
+  { action_id: 631, type_name: "Pass", start_x: 82.65789, start_y: 55.155956, end_x: 84.966945, end_y: 48.744984, player_name_ko: "안혁주", team_name_ko: "광주FC", receiver_name_ko: "이건희", result_name: "Successful", time_seconds: 1231 },
+  { action_id: 632, type_name: "Pass Received", start_x: 84.966945, start_y: 48.744984, end_x: 84.966945, end_y: 48.744984, player_name_ko: "이건희", team_name_ko: "광주FC", time_seconds: 1231.5 },
+  { action_id: 633, type_name: "Carry", start_x: 84.966945, start_y: 48.744984, end_x: 86.01831, end_y: 45.475884, player_name_ko: "이건희", team_name_ko: "광주FC", time_seconds: 1232 },
+  { action_id: 634, type_name: "Pass", start_x: 86.01831, start_y: 45.475884, end_x: 82.594575, end_y: 41.949744, player_name_ko: "이건희", team_name_ko: "광주FC", receiver_name_ko: "이희균", result_name: "Successful", time_seconds: 1233 },
+  { action_id: 635, type_name: "Pass Received", start_x: 82.594575, start_y: 41.949744, end_x: 82.594575, end_y: 41.949744, player_name_ko: "이희균", team_name_ko: "광주FC", time_seconds: 1234 },
+  { action_id: 636, type_name: "Shot", start_x: 82.594575, start_y: 41.949744, end_x: 105.0, end_y: 36.672260464, player_name_ko: "이희균", team_name_ko: "광주FC", result_name: "Goal", time_seconds: 1235 },
+  { action_id: 637, type_name: "Goal", start_x: 105.0, start_y: 36.672260464, end_x: 105.0, end_y: 36.672260464, player_name_ko: "이희균", team_name_ko: "광주FC", result_name: "Goal", time_seconds: 1235 }
 ];
+
