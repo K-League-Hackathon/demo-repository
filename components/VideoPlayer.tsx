@@ -39,7 +39,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ matchInfo, onPlayStateChange,
       </div>
 
       {/* Overlay: Stadium Info */}
-      <div className="absolute bottom-6 right-6 text-right">
+      <div className="absolute bottom-16 right-6 text-right pointer-events-none">
         <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Location</p>
         <p className="text-sm text-white font-black italic">{matchInfo.stadium}</p>
       </div>
@@ -57,8 +57,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ matchInfo, onPlayStateChange,
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-[#c5a059]/40 m-4"></div>
         <div className="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-[#c5a059]/40 m-4"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 border-b-2 border-l-2 border-[#c5a059]/40 m-4"></div>
-        <div className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-[#c5a059]/40 m-4"></div>
+        {/* 하단 UI 라인은 비디오 컨트롤과 겹치지 않도록 bottom-12로 위치 조정 */}
+        <div className="absolute bottom-12 left-0 w-16 h-16 border-b-2 border-l-2 border-[#c5a059]/40 m-4"></div>
+        <div className="absolute bottom-12 right-0 w-16 h-16 border-b-2 border-r-2 border-[#c5a059]/40 m-4"></div>
       </div>
     </div>
   );

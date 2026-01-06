@@ -10,7 +10,10 @@ interface ActionStackProps {
 }
 
 const ActionStack: React.FC<ActionStackProps> = ({ actions, activeIndex, onActionClick }) => {
-  if (actions.length === 0) {
+  // Pass Received와 Goal은 카드로 표시하지 않음 (Pass-Receive, Shot-Goal 세트)
+  const displayActions = actions.filter(a => a.type_name !== 'Pass Received' && a.type_name !== 'Goal');
+  
+  if (displayActions.length === 0) {
     return (
       <div className="h-full flex flex-col justify-center items-center text-center px-4 bg-white/[0.02] border border-white/10 border-dashed rounded-xl">
         <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest leading-relaxed italic">Select Shot for Replay</p>
@@ -19,11 +22,35 @@ const ActionStack: React.FC<ActionStackProps> = ({ actions, activeIndex, onActio
   }
 
   return (
-    <div className="flex flex-col h-full gap-1.5 overflow-hidden">
-      {actions.map((action, idx) => {
+    <div className="flex flex-col h-full gap-1.5 overflow-hidden overflow-y-auto no-scrollbar">
+      {displayActions.map((action, idx) => {
         // App에서 넘겨주는 activeIndex는 전체 MOCK_SEQUENCE의 인덱스임
         const globalSequence = (window as any).MOCK_SEQUENCE_DATA || [];
-        const isSelected = activeIndex >= 0 && action.action_id === globalSequence[activeIndex]?.action_id;
+        const currentActiveAction = globalSequence[activeIndex];
+        
+        // Pass Received가 활성화된 경우, 그 이전 Pass를 하이라이트
+        // Goal이 활성화된 경우, Shot 카드를 하이라이트
+        let isSelected = false;
+        if (currentActiveAction) {
+          if (currentActiveAction.type_name === 'Pass Received') {
+            // Pass Received인 경우, 해당 위치의 Pass를 찾아서 하이라이트
+            const receiveIdx = globalSequence.findIndex((a: any) => a.action_id === currentActiveAction.action_id);
+            const prevAction = globalSequence[receiveIdx - 1];
+            isSelected = prevAction && action.action_id === prevAction.action_id;
+          } else if (currentActiveAction.type_name === 'Goal') {
+            // Goal인 경우 Shot 카드를 하이라이트
+            const goalIdx = globalSequence.findIndex((a: any) => a.action_id === currentActiveAction.action_id);
+            const prevAction = globalSequence[goalIdx - 1];
+            isSelected = prevAction && action.action_id === prevAction.action_id;
+          } else {
+            isSelected = action.action_id === currentActiveAction.action_id;
+          }
+        }
+        
+        // Shot 카드인 경우, 다음 액션이 Goal인지 확인
+        const actionGlobalIdx = globalSequence.findIndex((a: any) => a.action_id === action.action_id);
+        const nextAction = globalSequence[actionGlobalIdx + 1];
+        const isGoalShot = action.type_name === 'Shot' && nextAction?.type_name === 'Goal';
         
         return (
           <motion.button
@@ -58,8 +85,10 @@ const ActionStack: React.FC<ActionStackProps> = ({ actions, activeIndex, onActio
             <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mr-3 transition-all ${
               isSelected ? 'bg-amber-500 text-black shadow-[0_0_10px_#f59e0b]' : 'bg-white/5 text-gray-500 border border-white/10'
             }`}>
-              {action.type_name === 'Shot' ? (
+              {isGoalShot ? (
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+              ) : action.type_name === 'Shot' ? (
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
               ) : action.type_name === 'Pass' ? (
                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
               ) : (
@@ -79,7 +108,7 @@ const ActionStack: React.FC<ActionStackProps> = ({ actions, activeIndex, onActio
               </div>
               <div className="flex items-center gap-1.5">
                 <span className={`text-[7px] font-black uppercase tracking-widest ${isSelected ? 'text-amber-400' : 'text-gray-600'}`}>
-                  {action.result_name === 'Goal' ? '★ GOAL' : action.type_name}
+                  {isGoalShot ? '★ GOAL' : action.type_name}
                 </span>
                 {action.receiver_name_ko && (
                   <span className="text-[7px] text-blue-400/50 font-black truncate">→ {action.receiver_name_ko}</span>

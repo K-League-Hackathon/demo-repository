@@ -42,7 +42,7 @@ export interface Coordinate {
 
 export interface SequenceAction {
   action_id: number;
-  type_name: "Pass" | "Shot" | "Touch" | "Carry";
+  type_name: "Pass" | "Shot" | "Touch" | "Carry" | "Pass Received" | "Goal";
   start_x: number;
   start_y: number;
   end_x?: number;

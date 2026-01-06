@@ -94,7 +94,7 @@ const RecentMatchScore: React.FC<RecentMatchScoreProps> = ({ match, isVideoPlayi
       </div>
 
       {/* Recent Record Label */}
-      <div className="flex justify-center mt-2">
+      <div className="flex ml-4 justify-center mt-1">
         <span className="text-[9px] font-bold text-[#c5a059] tracking-[0.3em] uppercase">최근 맞대결</span>
       </div>
     </motion.div>

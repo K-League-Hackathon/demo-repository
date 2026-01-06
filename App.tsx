@@ -18,7 +18,7 @@ const App: React.FC = () => {
     homeScore: 1,
     awayScore: 0,
     time: '34:12',
-    stadium: 'SEOUL WORLD CUP STADIUM'
+    stadium: 'Gwangju Football Stadium'
   });
 
   const [currentPlayer, setCurrentPlayer] = useState<Player>(PLAYERS[0]);
@@ -30,7 +30,7 @@ const App: React.FC = () => {
 
   // 영상 재생 상태 관리
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [videoCurrentTime, setVideoCurrentTime] = useState(1228); // 20:28 시작
+  const [videoCurrentTime, setVideoCurrentTime] = useState(0); // 비디오 재생 시간 (초)
 
   // 최근 맞대결 데이터
   const recentMatch = {
@@ -42,18 +42,19 @@ const App: React.FC = () => {
     awayLogo: '/서울fc.png'
   };
 
-  const shotLogs = MOCK_SEQUENCE.filter(action => action.type_name === "Shot");
+  // Goal 이벤트만 왼쪽 Shot Events 로그에 표시 (비디오 36초 이후에만 표시)
+  const shotLogs = videoCurrentTime >= 36 
+    ? MOCK_SEQUENCE.filter(action => action.type_name === "Goal")
+    : [];
 
   const handleShotClick = useCallback((shotAction: SequenceAction) => {
     setIsAutoPlaying(false);
     if (autoPlayTimerRef.current) clearTimeout(autoPlayTimerRef.current);
     
-    const shotIdx = MOCK_SEQUENCE.findIndex(a => a.action_id === shotAction.action_id);
-    const startIdx = Math.max(0, shotIdx - 4);
-    
+    // Goal 클릭 시 전체 시퀀스 12개를 모두 보여줌
     const sequenceIndices = [];
     const sequenceActions = [];
-    for (let i = startIdx; i <= shotIdx; i++) {
+    for (let i = 0; i < MOCK_SEQUENCE.length; i++) {
       sequenceIndices.push(i);
       sequenceActions.push(MOCK_SEQUENCE[i]);
     }
@@ -105,8 +106,8 @@ const App: React.FC = () => {
           <img src="/KLeague.png" alt="K League" className="h-8 drop-shadow-md" />
           <div className="h-4 w-[1px] bg-white/10"></div>
           <div className="flex flex-col">
-            <h1 className="text-sm font-black tracking-tight uppercase italic leading-none">Match Matrix AI</h1>
-            <span className="text-[8px] font-black text-[#c5a059] tracking-widest uppercase opacity-80">Shot build-up Analysis</span>
+            <h1 className="text-sm font-black tracking-tight uppercase italic leading-none">K 리그 정규 시즌</h1>
+            <span className="text-[8px] font-black text-[#c5a059] tracking-widest uppercase opacity-80">슛 분석 화면</span>
           </div>
         </div>
         
@@ -154,26 +155,35 @@ const App: React.FC = () => {
             </div>
             
             <div className="flex-1 overflow-y-auto p-2.5 space-y-2 no-scrollbar">
-              {shotLogs.map((action) => (
-                <motion.button
-                  key={action.action_id}
-                  onClick={() => handleShotClick(action)}
-                  whileHover={{ x: 3 }}
-                  className={`w-full text-left p-2.5 rounded-lg flex items-center gap-3 border transition-all duration-300 ${activeActionIndex === MOCK_SEQUENCE.findIndex(a => a.action_id === action.action_id) || (activeSequenceActions.some(a => a.action_id === action.action_id)) ? 'bg-amber-500/15 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.15)] ring-1 ring-amber-500/40' : 'bg-white/2 border-white/5 hover:bg-white/5 hover:border-white/10'}`}
-                >
-                  <div className="w-6 h-6 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20 shrink-0">
-                    <span className="text-[8px] font-black italic">S</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-center">
-                      <p className="text-[12px] font-black text-white truncate uppercase">{action.player_name_ko}</p>
-                      <span className="text-[8px] font-mono text-amber-500/80">
-                        {Math.floor(action.time_seconds / 60)}:{(action.time_seconds % 60).toFixed(0).padStart(2,'0')}
-                      </span>
+              <AnimatePresence>
+                {shotLogs.map((action) => (
+                  <motion.button
+                    key={action.action_id}
+                    initial={{ opacity: 0, x: -20, scale: 0.95 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: -20, scale: 0.95 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    onClick={() => handleShotClick(action)}
+                    whileHover={{ x: 3 }}
+                    className={`w-full text-left p-2.5 rounded-lg flex items-center gap-3 border transition-all duration-300 ${activeActionIndex === MOCK_SEQUENCE.findIndex(a => a.action_id === action.action_id) || (activeSequenceActions.some(a => a.action_id === action.action_id)) ? 'bg-amber-500/15 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.15)] ring-1 ring-amber-500/40' : 'bg-white/2 border-white/5 hover:bg-white/5 hover:border-white/10'}`}
+                  >
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center border shrink-0 ${action.type_name === 'Goal' ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : 'bg-amber-500/10 text-amber-500 border-amber-500/20'}`}>
+                      <span className="text-[8px] font-black italic">{action.type_name === 'Goal' ? '★' : 'S'}</span>
                     </div>
-                  </div>
-                </motion.button>
-              ))}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-center">
+                        <p className="text-[12px] font-black text-white truncate uppercase">{action.player_name_ko}</p>
+                        <span className="text-[8px] font-mono text-amber-500/80">
+                          {Math.floor(action.time_seconds / 60)}:{(action.time_seconds % 60).toFixed(0).padStart(2,'0')}
+                        </span>
+                      </div>
+                      {action.type_name === 'Goal' && (
+                        <span className="text-[7px] font-black text-amber-400 uppercase tracking-widest">★ GOAL</span>
+                      )}
+                    </div>
+                  </motion.button>
+                ))}
+              </AnimatePresence>
             </div>
           </div>
         </aside>

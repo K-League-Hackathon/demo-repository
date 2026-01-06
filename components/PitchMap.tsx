@@ -53,18 +53,18 @@ const PitchMap: React.FC<PitchMapProps> = ({
     setViewMode('ACTION');
     setCurrentAction(action);
     
-    setTrails(prev => {
-        const actionIdx = MOCK_SEQUENCE.findIndex(a => a.action_id === action.action_id);
-        const startOfSeq = Math.max(0, actionIdx - 4);
-        const currentSeq = MOCK_SEQUENCE.slice(startOfSeq, actionIdx + 1);
-        return currentSeq;
-    });
+    // activeSequenceActions에서 현재 액션까지의 트레일 설정
+    const actionIdx = activeSequenceActions.findIndex(a => a.action_id === action.action_id);
+    if (actionIdx >= 0) {
+      setTrails(activeSequenceActions.slice(0, actionIdx + 1));
+    }
     
     const isShot = action.type_name === "Shot";
+    const isGoal = action.type_name === "Goal";
     const hasEnd = action.end_x !== undefined && action.end_y !== undefined;
 
-    const moveDuration = isShot ? 0.5 : 0.8;
-    const moveEase: any = isShot ? [0.16, 1, 0.3, 1] : [0.45, 0, 0.55, 1];
+    const moveDuration = isShot || isGoal ? 0.5 : 0.8;
+    const moveEase: any = isShot || isGoal ? [0.16, 1, 0.3, 1] : [0.45, 0, 0.55, 1];
 
     if (!isConnected) {
       ballControls.set({
@@ -92,7 +92,7 @@ const PitchMap: React.FC<PitchMapProps> = ({
         setTrails([]);
       }, 5000);
     }
-  }, [ballControls, isAutoPlaying]);
+  }, [ballControls, isAutoPlaying, activeSequenceActions]);
 
   useEffect(() => {
     if (activeActionIndex >= 0 && MOCK_SEQUENCE[activeActionIndex]) {
@@ -110,9 +110,10 @@ const PitchMap: React.FC<PitchMapProps> = ({
     }
   }, [activeActionIndex, playSequenceStep]);
 
-  // 어느 쪽 골대에 골이 들어갔는지 확인
-  const isLeftGoal = currentAction?.result_name === "Goal" && currentAction.end_x! < 50;
-  const isRightGoal = currentAction?.result_name === "Goal" && currentAction.end_x! >= 50;
+  // 어느 쪽 골대에 골이 들어갔는지 확인 (type_name이 Goal이거나 result_name이 Goal인 경우)
+  const isGoalAction = currentAction?.type_name === "Goal" || currentAction?.result_name === "Goal";
+  const isLeftGoal = isGoalAction && currentAction && currentAction.end_x! < 50;
+  const isRightGoal = isGoalAction && currentAction && currentAction.end_x! >= 50;
 
   return (
     <div className="w-full bg-[#030712] p-6 rounded-3xl border border-white/5 flex flex-col gap-4 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
@@ -135,7 +136,7 @@ const PitchMap: React.FC<PitchMapProps> = ({
       </svg>
 
       <AnimatePresence>
-        {currentAction?.result_name === "Goal" && (
+        {isGoalAction && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -156,7 +157,7 @@ const PitchMap: React.FC<PitchMapProps> = ({
         <div className="flex items-center gap-3">
           <div className={`w-1 h-6 rounded-full ${isAutoPlaying ? 'bg-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.8)]' : 'bg-gray-600'}`} />
           <h3 className={`text-[12px] font-black uppercase tracking-[0.4em] ${isAutoPlaying ? 'text-amber-400' : 'text-gray-400'}`}>
-            {isAutoPlaying ? (currentAction?.result_name === 'Goal' ? '★ GOAL CONFIRMED: ANALYTICS' : 'TACTICAL SEQUENCE REPLAY') : 'SQUAD TACTICAL FORMATION'}
+            {isAutoPlaying ? (isGoalAction ? '★ GOAL CONFIRMED: ANALYTICS' : 'TACTICAL SEQUENCE REPLAY') : 'SQUAD TACTICAL FORMATION'}
           </h3>
         </div>
       </div>
@@ -267,8 +268,14 @@ const PitchMap: React.FC<PitchMapProps> = ({
             <AnimatePresence>
               {trails.map((t, i) => {
                 const isTShot = t.type_name === 'Shot';
-                const isTGoal = t.result_name === 'Goal';
+                const isTGoal = t.type_name === 'Goal';
+                const isPassReceived = t.type_name === 'Pass Received';
                 const isCurrent = t.action_id === currentAction?.action_id;
+                
+                // Pass Received는 이동이 없으므로 트레일 라인을 그리지 않음
+                if (isPassReceived || (t.start_x === t.end_x && t.start_y === t.end_y)) {
+                  return null;
+                }
                 
                 const color = isTGoal ? '#f59e0b' : (isTShot ? '#fbbf24' : '#22d3ee');
                 const strokeWidth = isCurrent ? 1.5 : 0.8;
@@ -315,11 +322,11 @@ const PitchMap: React.FC<PitchMapProps> = ({
                   <div className={`w-full h-full rounded-full animate-pulse ${currentAction?.type_name === 'Shot' ? 'bg-amber-400' : 'bg-cyan-400'}`} />
                 </div>
                 
-                <div className={`w-4 h-4 rounded-full border-2 border-white/80 shadow-[0_0_20px_white] flex items-center justify-center transition-colors duration-300 ${currentAction?.result_name === 'Goal' ? 'bg-amber-400 scale-150 shadow-amber-500' : (currentAction?.type_name === 'Shot' ? 'bg-amber-300 scale-125' : 'bg-cyan-300')}`}>
+                <div className={`w-4 h-4 rounded-full border-2 border-white/80 shadow-[0_0_20px_white] flex items-center justify-center transition-colors duration-300 ${isGoalAction ? 'bg-amber-400 scale-150 shadow-amber-500' : (currentAction?.type_name === 'Shot' ? 'bg-amber-300 scale-125' : 'bg-cyan-300')}`}>
                    <div className="w-1.5 h-1.5 bg-white rounded-full opacity-80" />
                 </div>
 
-                {currentAction?.result_name === 'Goal' && (
+                {isGoalAction && (
                   <motion.div 
                     initial={{ scale: 0.5, opacity: 1 }}
                     animate={{ scale: 3, opacity: 0 }}
@@ -332,7 +339,7 @@ const PitchMap: React.FC<PitchMapProps> = ({
           </AnimatePresence>
 
           <AnimatePresence>
-            {currentAction?.result_name === 'Goal' && (
+            {isGoalAction && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
