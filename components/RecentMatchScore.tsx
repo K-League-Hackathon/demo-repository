@@ -26,11 +26,9 @@ interface RecentMatchScoreProps {
 
 // 최근 맞대결 기록 (광주 FC vs FC 서울)
 const MATCH_HISTORY: MatchHistory[] = [
-  { date: '2025.09.15', homeScore: 2, awayScore: 1, competition: 'K리그1' },
-  { date: '2025.05.22', homeScore: 0, awayScore: 0, competition: 'K리그1' },
-  { date: '2024.10.06', homeScore: 1, awayScore: 3, competition: 'K리그1' },
-  { date: '2024.06.30', homeScore: 2, awayScore: 2, competition: 'K리그1' },
-  { date: '2024.03.10', homeScore: 1, awayScore: 0, competition: 'K리그1' },
+  { date: '2023.09.17', homeScore: 1, awayScore: 0, competition: 'K리그1' },
+  { date: '2023.05.09', homeScore: 1, awayScore: 3, competition: 'K리그1' },
+  { date: '2023.03.05', homeScore: 0, awayScore: 2, competition: 'K리그1' },
 ];
 
 const RecentMatchScore: React.FC<RecentMatchScoreProps> = ({ match, isVideoPlaying = false, videoCurrentTime }) => {
@@ -75,7 +73,10 @@ const RecentMatchScore: React.FC<RecentMatchScoreProps> = ({ match, isVideoPlayi
             alt={match.homeTeam} 
             className="w-8 h-8 object-contain drop-shadow-[0_0_5px_rgba(255,255,255,0.2)]" 
           />
-          <span className="text-sm font-bold text-gray-300 tracking-wide">{match.homeTeam}</span>
+          <div className="flex flex-col">
+            <span className="text-sm font-bold text-gray-300 tracking-wide">{match.homeTeam}</span>
+            <span className="text-[9px] text-[#c5a059] font-semibold tracking-wider">HOME</span>
+          </div>
         </div>
 
         {/* Score */}
@@ -110,8 +111,9 @@ const RecentMatchScore: React.FC<RecentMatchScoreProps> = ({ match, isVideoPlayi
       </div>
 
       {/* Recent Record Label */}
-      <div className="flex justify-center ml-4 mt-2 mb-2">
+      <div className="flex flex-col items-center ml-4 mt-2 mb-2">
         <span className="text-[9px] font-bold text-[#c5a059] tracking-[0.3em] uppercase">최근 맞대결</span>
+        <span className="text-[10px] font-medium text-gray-400 mt-1">최근 전적 <span className="text-white font-bold">5전</span> <span className="text-green-400 font-bold">1승</span> <span className="text-red-400 font-bold">4패</span></span>
       </div>
       
       {/* Match History */}
