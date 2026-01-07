@@ -35,6 +35,41 @@ const TRAITS_POOLS: Record<string, {name: string, description: string}[]> = {
     { name: "타겟맨 (Wall Finisher)", description: "전방에서 공을 소유하며 동료에게 기회 창출" }
   ]
 };
+
+// 선수별 개별 특성 데이터
+const PLAYER_TRAITS: Record<string, {name: string, description: string}[]> = {
+  '안영규': [
+    { name: "베테랑 (Veteran)", description: "10년 이상의 경험에서 나오는 노련한 경기 운영" },
+    { name: "원샷원킬 (One Shot One Kill)", description: "단 한 번의 기회도 놓치지 않는 결정력" },
+    { name: "기회 창출가 (Playmaker)", description: "동료에게 결정적인 찬스를 만들어주는 시야" },
+    { name: "데드볼 스페셜리스트 (Set-Piece Master)", description: "프리킥, 코너킥 등 세트피스 상황의 전문가" },
+    { name: "진공 청소기 (Vacuum Cleaner)", description: "중원의 공을 빠짐없이 회수하는 볼 탈취 능력" }
+  ],
+  '김진호': [
+    { name: "밸런서 (Balancer)", description: "팀의 균형을 유지하며 공수 밸런스를 조율" },
+    { name: "택배 기사 (Delivery Man)", description: "정확한 크로스와 패스로 공을 배달하는 배급력" },
+    { name: "측면의 지우개 (Flank Eraser)", description: "측면에서 상대 공격수를 완벽하게 차단" },
+    { name: "파이터 (Fighter)", description: "절대 포기하지 않는 투지와 강한 정신력" }
+  ],
+  '안혁주': [
+    { name: "밸런서 (Balancer)", description: "팀의 균형을 유지하며 공수 밸런스를 조율" },
+    { name: "원샷원킬 (One Shot One Kill)", description: "단 한 번의 기회도 놓치지 않는 결정력" },
+    { name: "크랙 (Crack)", description: "상대 수비 조직을 무너뜨리는 돌파력과 창의성" },
+    { name: "치달러 (Box Crasher)", description: "골 에어리어로 과감하게 침투하는 공격 본능" }
+  ],
+  '이건희': [
+    { name: "밸런서 (Balancer)", description: "팀의 균형을 유지하며 공수 밸런스를 조율" },
+    { name: "파이터 (Fighter)", description: "절대 포기하지 않는 투지와 강한 정신력" },
+    { name: "원샷원킬 (One Shot One Kill)", description: "단 한 번의 기회도 놓치지 않는 결정력" },
+    { name: "크랙 (Crack)", description: "상대 수비 조직을 무너뜨리는 돌파력과 창의성" }
+  ],
+  '이희균': [
+    { name: "밸런서 (Balancer)", description: "팀의 균형을 유지하며 공수 밸런스를 조율" },
+    { name: "원샷원킬 (One Shot One Kill)", description: "단 한 번의 기회도 놓치지 않는 결정력" },
+    { name: "기회 창출가 (Playmaker)", description: "동료에게 결정적인 찬스를 만들어주는 시야" },
+    { name: "치달러 (Box Crasher)", description: "골 에어리어로 과감하게 침투하는 공격 본능" }
+  ]
+};
 // 고해상도 스포츠 초상화 이미지 (Unsplash 기반 플레이스홀더)
 const PLAYER_IMAGES: Record<string, string> = {
   'h1': '김경민.png', 
@@ -113,6 +148,15 @@ const getPlayerStats = (name: string) => {
   ];
 };
 
+// 선수별 특성을 가져오는 함수 (개별 특성이 없으면 포지션별 기본값 사용)
+const getPlayerTraits = (name: string, pos: string) => {
+  if (PLAYER_TRAITS[name]) {
+    return PLAYER_TRAITS[name];
+  }
+  // 개별 특성이 없는 선수는 포지션별 기본 특성 사용
+  return TRAITS_POOLS[pos.includes('G') ? 'GK' : pos.includes('D') ? 'DF' : pos.includes('M') ? 'MF' : 'ST'] || TRAITS_POOLS['MF'];
+};
+
 export const PLAYERS: Player[] = HOME_FORMATION.map(f => ({
   id: f.id,
   name: f.name,
@@ -125,7 +169,7 @@ export const PLAYERS: Player[] = HOME_FORMATION.map(f => ({
   x: f.x,
   y: f.y,
   stats: getPlayerStats(f.name),
-  keyTraits: TRAITS_POOLS[f.pos.includes('G') ? 'GK' : f.pos.includes('D') ? 'DF' : f.pos.includes('M') ? 'MF' : 'ST'] || TRAITS_POOLS['MF'],
+  keyTraits: getPlayerTraits(f.name, f.pos),
   preferredPlays: ['전술적 움직임', '높은 활동량', '포지셔닝 강점']
 }));
 

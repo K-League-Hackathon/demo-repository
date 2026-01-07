@@ -11,11 +11,27 @@ interface RecentMatch {
   awayLogo: string;
 }
 
+interface MatchHistory {
+  date: string;
+  homeScore: number;
+  awayScore: number;
+  competition: string;
+}
+
 interface RecentMatchScoreProps {
   match: RecentMatch;
   isVideoPlaying?: boolean;
   videoCurrentTime?: number;
 }
+
+// 최근 맞대결 기록 (광주 FC vs FC 서울)
+const MATCH_HISTORY: MatchHistory[] = [
+  { date: '2025.09.15', homeScore: 2, awayScore: 1, competition: 'K리그1' },
+  { date: '2025.05.22', homeScore: 0, awayScore: 0, competition: 'K리그1' },
+  { date: '2024.10.06', homeScore: 1, awayScore: 3, competition: 'K리그1' },
+  { date: '2024.06.30', homeScore: 2, awayScore: 2, competition: 'K리그1' },
+  { date: '2024.03.10', homeScore: 1, awayScore: 0, competition: 'K리그1' },
+];
 
 const RecentMatchScore: React.FC<RecentMatchScoreProps> = ({ match, isVideoPlaying = false, videoCurrentTime }) => {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -94,8 +110,30 @@ const RecentMatchScore: React.FC<RecentMatchScoreProps> = ({ match, isVideoPlayi
       </div>
 
       {/* Recent Record Label */}
-      <div className="flex ml-4 justify-center mt-1">
+      <div className="flex justify-center ml-4 mt-2 mb-2">
         <span className="text-[9px] font-bold text-[#c5a059] tracking-[0.3em] uppercase">최근 맞대결</span>
+      </div>
+      
+      {/* Match History */}
+      <div className="flex flex-col gap-1 mt-1">
+        {MATCH_HISTORY.slice(0, 3).map((history, index) => (
+          <div 
+            key={index}
+            className="flex items-center justify-center gap-4 py-1 px-3 rounded bg-white/[0.02] border border-white/5"
+          >
+            <span className="text-[9px] text-gray-500 font-mono w-20">{history.date}</span>
+            <div className="flex items-center gap-2">
+              <span className={`text-[11px] font-black ${history.homeScore > history.awayScore ? 'text-green-400' : history.homeScore < history.awayScore ? 'text-red-400' : 'text-gray-400'}`}>
+                {history.homeScore}
+              </span>
+              <span className="text-[9px] text-gray-600">-</span>
+              <span className={`text-[11px] font-black ${history.awayScore > history.homeScore ? 'text-green-400' : history.awayScore < history.homeScore ? 'text-red-400' : 'text-gray-400'}`}>
+                {history.awayScore}
+              </span>
+            </div>
+            <span className="text-[8px] text-gray-600 font-medium">{history.competition}</span>
+          </div>
+        ))}
       </div>
     </motion.div>
   );

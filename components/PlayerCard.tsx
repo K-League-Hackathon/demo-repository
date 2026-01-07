@@ -97,8 +97,8 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player }) => {
           </div>
           
           {/* Traits Grid */}
-          <div className="flex-1 flex flex-col gap-2 justify-center min-h-0">
-            {player.keyTraits.slice(0, 3).map((trait, index) => (
+          <div className="flex-1 flex flex-col gap-1.5 justify-center min-h-0 overflow-y-auto">
+            {player.keyTraits.slice(0, 5).map((trait, index) => (
               <motion.div 
                 key={index}
                 initial={{ opacity: 0, x: -20 }}
@@ -106,7 +106,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player }) => {
                 transition={{ delay: 0.6 + (index * 0.1) }}
                 onMouseEnter={() => setHoveredTrait(index)}
                 onMouseLeave={() => setHoveredTrait(null)}
-                className={`flex flex-col p-3 rounded-xl border transition-all duration-300 relative overflow-hidden ${
+                className={`flex flex-col p-2 rounded-lg border transition-all duration-300 relative overflow-hidden ${
                   hoveredTrait === index ? 'border-[#c5a059]/50 bg-[#c5a059]/10' : 'bg-white/[0.03] border-white/5'
                 }`}
               >
