@@ -42,8 +42,8 @@ const App: React.FC = () => {
     awayLogo: '/서울fc.png'
   };
 
-  // Goal 이벤트만 왼쪽 Shot Events 로그에 표시 (비디오 36초 이후에만 표시)
-  const shotLogs = videoCurrentTime >= 36 
+  // Goal 이벤트만 왼쪽 Shot Events 로그에 표시 (비디오 12초 이후에만 표시)
+  const shotLogs = videoCurrentTime >= 12 
     ? MOCK_SEQUENCE.filter(action => action.type_name === "Goal")
     : [];
 
