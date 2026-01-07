@@ -37,17 +37,17 @@ const TRAITS_POOLS: Record<string, {name: string, description: string}[]> = {
 };
 // 고해상도 스포츠 초상화 이미지 (Unsplash 기반 플레이스홀더)
 const PLAYER_IMAGES: Record<string, string> = {
-  'h1': './public/players/김경민.png', 
-  'h2': './public/players/김진호.png',
-  'h3': './public/players/포포비치.png',
-  'h4': './public/players/안영규.png',
-  'h5': './public/players/두현석.png',
-  'h6': './public/players/안혁주.png',
-  'h7': './public/players/정호연.png',
-  'h8': './public/players/최경록.png',
-  'h9': './public/players/티그랑.png',
-  'h10': './public/players/이희균.png',
-  'h11': './public/players/이건희.png',
+  'h1': '김경민.png', 
+  'h2': '김진호.png',
+  'h3': '포포비치.png',
+  'h4': '안영규.png',
+  'h5': '두현석.png',
+  'h6': '안혁주.png',
+  'h7': '정호연.png',
+  'h8': '최경록.png',
+  'h9': '티그랑.png',
+  'h10':'이희균.png',
+  'h11':'이건희.png',
 };
 
 // 광주 FC - 1-4-4-2 포메이션 (왼쪽)
